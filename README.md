@@ -25,3 +25,9 @@ npm run build
 ```sh
 npm run lint
 ```
+
+## Demo
+
+Test it here: https://yeikiu.github.io/vue-lens-demo/
+
+![lensmaker_vue](lensmaker_vue.png)
