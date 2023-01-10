@@ -1,6 +1,6 @@
 # vue-lens
 
-Lensmaker's equation visualization
+> Lensmaker's equation visualization
 
 ## Project Setup
 
