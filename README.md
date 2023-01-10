@@ -28,6 +28,6 @@ npm run lint
 
 ## Demo
 
-Test it live here: https://yeikiu.github.io/vue-lens-demo/
+Test it here: https://yeikiu.github.io/vue-lens-demo/
 
 ![lensmaker_vue](lensmaker_vue.png)
