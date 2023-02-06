@@ -88,10 +88,12 @@ onMounted(() => {
           <button v-if="newConfigLabel.length > 0 && !Object.keys(configs).includes(newConfigLabel.trim())" @click=handleSaveConfig class="border px-2">Save</button>
         </div>
 
-        <label for="configSelect">Load template</label>
-        <select id="configSelect" v-model=selectedConfigLabel class="w-full h-fit p-1 border mt-1">
-          <option :id="id" v-for="{ id, label } in configs" :key=id>{{label}}</option>
-        </select>
+        <div v-if="Object.keys(configs).length > 0">
+          <label for="configSelect">Load template</label>
+          <select id="configSelect" v-model=selectedConfigLabel class="w-full h-fit p-1 border mt-1">
+            <option :id="id" v-for="{ id, label } in configs" :key=id>{{label}}</option>
+          </select>
+        </div>
       </div>
     </header>
 
