@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import * as THREE from 'three'
 
-import {ref, onMounted, watchEffect} from 'vue'
+import {ref, onMounted, watchEffect, watch} from 'vue'
 
 const props = defineProps<{
-    leftRadius: number, // radius of curvature of the front and back surfaces
-    rightRadius: number,
-    thickness: number, // thickness of the lens
-    refractiveIndex: number,
+    leftRadius: string, // radius of curvature of the front and back surfaces
+    rightRadius: string,
+    thickness: string, // thickness of the lens
+    refractiveIndex: string,
 }>()
 
 const getFocalPoint = (refIndex: number, thickness: number, r1: number, r2: number) => {
@@ -27,16 +27,16 @@ const LENS_HEIGHT = 30
 let focalPoint = ref(NaN)
 
 const renderScene = (props: Readonly<{
-    leftRadius: number;
-    rightRadius: number;
-    thickness: number;
-    refractiveIndex: number;
+    leftRadius: string;
+    rightRadius: string;
+    thickness: string;
+    refractiveIndex: string;
 }>) => {
     const { thickness, leftRadius, rightRadius, refractiveIndex } = props
 
-    const calcThickness = thickness / 2
-    const calcRightRadius = rightRadius / -10
-    const calcLeftRadius = leftRadius / -10
+    const calcThickness = Number(thickness) / 2
+    const calcRightRadius = Number(rightRadius) / -10
+    const calcLeftRadius = Number(leftRadius) / -10
 
     // Lens thickness
     const lineUpPoints = [];
@@ -75,8 +75,8 @@ const renderScene = (props: Readonly<{
     const baseLineGeometry = new THREE.BufferGeometry().setFromPoints(baseLinePoints);
 
     // Light-Source
-    focalPoint.value = getFocalPoint(refractiveIndex, thickness, leftRadius, rightRadius)
-    console.log({ focalPoint })
+    focalPoint.value = getFocalPoint(Number(refractiveIndex), Number(thickness), Number(leftRadius), Number(rightRadius))
+    
     const lightLinePoints = [];
     lightLinePoints.push(new THREE.Vector2(-80, LENS_HEIGHT/4));
     lightLinePoints.push(new THREE.Vector2((curveLeftPath[1].x + curveRightPath[1].x) / 2, LENS_HEIGHT/4));
@@ -120,25 +120,24 @@ onMounted(() => {
         canvas: lensContainer.value as HTMLCanvasElement
     });
     renderer.setSize(window.innerWidth * 0.75, window.innerHeight);
-    renderScene({...props})
+    renderScene(props)
 })
 
-watchEffect(() => {
-    console.log({ ...props })
+watch(props, (newVal) => {
     if (!renderer) return
     
     scene.clear()
-    renderScene({...props})
+    renderScene(newVal)
 })
 </script>
 
 <template>
     <div class="h-24 flex p-4">
         <div class="text-xs w-1/4">
-            <p>left-radius: {{ props.leftRadius > -0.1 && props.leftRadius < 0.1 ? '∞' : props.leftRadius }} cm</p>
-            <p>right-radius: {{ props.rightRadius > -0.1 && props.rightRadius < 0.1 ? '-∞' : props.rightRadius }} cm</p>
-            <p>lens-thickness: {{ props.thickness }} cm</p>
-            <p>ref. index: {{ props.refractiveIndex }}</p>
+            <p>left-radius: {{ Number(props.leftRadius) > -0.1 && Number(props.leftRadius) < 0.1 ? '∞' : Number(props.leftRadius) }} cm</p>
+            <p>right-radius: {{ Number(props.rightRadius) > -0.1 && Number(props.rightRadius) < 0.1 ? '-∞' : Number(props.rightRadius) }} cm</p>
+            <p>lens-thickness: {{ Number(props.thickness) }} cm</p>
+            <p>ref. index: {{ Number(props.refractiveIndex) }}</p>
         </div>
         <div class="w-3/4"><p class="border w-fit m-2 p-2"><strong>focal point: {{ focalPoint === Infinity ? '∞' : focalPoint.toFixed(2) }} cm</strong></p></div>
     </div>
