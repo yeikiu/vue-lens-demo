@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import * as THREE from 'three'
 
-import {ref, onMounted, watchEffect, watch} from 'vue'
+import {ref, onMounted, watch} from 'vue'
 
 const props = defineProps<{
     leftRadius: string, // radius of curvature of the front and back surfaces
@@ -134,10 +134,10 @@ watch(props, (newVal) => {
 <template>
     <div class="h-24 flex p-4">
         <div class="text-xs w-1/4">
-            <p>left-radius: {{ Number(props.leftRadius) > -0.1 && Number(props.leftRadius) < 0.1 ? '∞' : Number(props.leftRadius) }} cm</p>
-            <p>right-radius: {{ Number(props.rightRadius) > -0.1 && Number(props.rightRadius) < 0.1 ? '-∞' : Number(props.rightRadius) }} cm</p>
-            <p>lens-thickness: {{ Number(props.thickness) }} cm</p>
-            <p>ref. index: {{ Number(props.refractiveIndex) }}</p>
+            <p>left-radius: {{ Number(leftRadius) > -0.1 && Number(leftRadius) < 0.1 ? '∞' : Number(leftRadius) }} cm</p>
+            <p>right-radius: {{ Number(rightRadius) > -0.1 && Number(rightRadius) < 0.1 ? '-∞' : Number(rightRadius) }} cm</p>
+            <p>lens-thickness: {{ Number(thickness) }} cm</p>
+            <p>ref. index: {{ Number(refractiveIndex) }}</p>
         </div>
         <div class="w-3/4"><p class="border w-fit m-2 p-2"><strong>focal point: {{ focalPoint === Infinity ? '∞' : focalPoint.toFixed(2) }} cm</strong></p></div>
     </div>
