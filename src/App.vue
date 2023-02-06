@@ -38,7 +38,12 @@ const handleSaveConfig = () => {
       configs.value[configToSave.label] = configToSave;
       newConfigLabel.value = '';
       selectedConfigLabel.value = configToSave.label;
-    });
+    })
+    .catch(() => {
+      configs.value[configToSave.label] = configToSave;
+      newConfigLabel.value = '';
+      selectedConfigLabel.value = configToSave.label;
+    })
 }
 
 onMounted(() => {
@@ -48,6 +53,9 @@ onMounted(() => {
       // Convert the array response into an object with labels as keys
       configs.value = (data.Items as any[]).reduce((p,c) => ({...p, [c.label]: c}), {});
       selectedConfigLabel.value = 'default';
+    })
+    .catch(() => {
+      configs.value = {}
     });
 })
 </script>
