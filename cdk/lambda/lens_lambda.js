@@ -1,26 +1,26 @@
 const AWS = require('aws-sdk');
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-exports.createItemHandler = async (createItemEvent) => {
-  console.log({ createItemEvent })
+exports.createItemHandlerV2 = async (createItemEvent) => {
   try {
     const data = JSON.parse(createItemEvent.body)
+    const Item = {
+      ...data,
+      id: new Date().getTime().toString(),
+    }
     await docClient.put({
       TableName : process.env.TABLE_NAME,
-      Item: {
-        ...data,
-        id: new Date().getTime().toString(),
-      }
+      Item,
     }).promise();
 
-    return 'CONFIG SAVED';
+    return Item;
 
   } catch (err) {
     return err;
   }
 };
 
-exports.listItemsHandler = async () => {
+exports.listItemsHandlerV2 = async () => {
   try {
     const tableData = await docClient.scan({
       TableName : process.env.TABLE_NAME,

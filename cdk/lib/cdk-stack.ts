@@ -8,19 +8,19 @@ export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const table = new dynamodb.Table(this, 'LensConfigTable', { 
+    const table = new dynamodb.Table(this, 'LensConfigTableV2', { 
       partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING }, 
       billingMode: dynamodb.BillingMode.PAY_PER_REQUEST, 
     });
 
-    const createItemLambdaFn = new lambda.Function(this, 'createItemLambda', {
+    const createItemLambdaFn = new lambda.Function(this, 'createItemLambdaV2', {
       code: lambda.Code.fromAsset('./lambda/'),
-      handler: 'lens_lambda.createItemHandler',
+      handler: 'lens_lambda.createItemHandlerV2',
       runtime: lambda.Runtime.NODEJS_16_X,
     }).addEnvironment('TABLE_NAME', table.tableName);
     table.grantWriteData(createItemLambdaFn)
 
-    new apigw.LambdaRestApi(this, 'createItemApi', {
+    new apigw.LambdaRestApi(this, 'createItemApiV2', {
       handler: createItemLambdaFn,
       proxy: false,
     }).root
@@ -29,12 +29,12 @@ export class CdkStack extends cdk.Stack {
 
     const listItemsLambdaFn = new lambda.Function(this, 'listItemsLambda', {
       code: lambda.Code.fromAsset('./lambda/'),
-      handler: 'lens_lambda.listItemsHandler',
+      handler: 'lens_lambda.listItemsHandlerV2',
       runtime: lambda.Runtime.NODEJS_16_X,
     }).addEnvironment('TABLE_NAME', table.tableName);
     table.grantReadData(listItemsLambdaFn)
 
-    new apigw.LambdaRestApi(this, 'listItemsApi', {
+    new apigw.LambdaRestApi(this, 'listItemsApiV2', {
       handler: listItemsLambdaFn,
       proxy: false,
     }).root

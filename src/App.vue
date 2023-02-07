@@ -30,7 +30,7 @@ const handleSaveConfig = () => {
     refractiveIndex: refractiveIndex.value,
   };
 
-  fetch('https://rffx7spcmx63iv6hoh5iyg54ly0yymkc.lambda-url.us-east-1.on.aws/save_config', {
+  fetch('https://mk4w6oald4e7okuaapcxjlpwre0tamae.lambda-url.us-east-1.on.aws/save_config', {
     method: 'POST',
     body: JSON.stringify(configToSave)
   })
@@ -47,7 +47,7 @@ const handleSaveConfig = () => {
 }
 
 onMounted(() => {
-  fetch('https://zqucebsqtr3ll7tvx2jkukpohm0ihqrx.lambda-url.us-east-1.on.aws/list_configs')
+  fetch('https://bzfduu4wwmecb72nw2nwnlue7m0chutk.lambda-url.us-east-1.on.aws/list_configs')
     .then(res => res.json())
     .then(data => {
       // Convert the array response into an object with labels as keys
